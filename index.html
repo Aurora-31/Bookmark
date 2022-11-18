@@ -153,13 +153,31 @@
           </div>
           
           <div style="text-align: center; margin-bottom: 2%;">
-            <button class="btn btn-outline-dark" v-if="canCheckout">
+            <button v-if="/^(?!\s*$)[a-zA-Z.+\s'-]+$/.test(this.name) && /^(?!\s*$)[0-9.+\s'-]+$/.test(this.phone) && this.phone.length === 10" class="btn btn-outline-dark" data-bs-toggle="modal" data-bs-target="#orderModal">
               Checkout
             </button>
-            <button class="btn btn-outline-dark" disabled="disabled" v-else>
+            <button disabled="disabled" v-else class="btn btn-outline-dark">
               Checkout
             </button>
           </div>
+
+          <div id="orderModal" class="modal" tabindex="-1">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title">Order Submitted</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  <p>Thank you for placing the order.</p>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Okay</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
         </div>
       </div>
     </main>
@@ -229,9 +247,7 @@
             this.showLesson = true
           }
         },
-        canCheckout(){
-          return /^[0-9]*$/.test(this.phone) && /^[a-zA-Z]+$/.test(this.name)
-        },
+      
         //   submitForm() {
         //     alert("Order submitted!");
         //   },
