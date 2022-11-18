@@ -94,7 +94,12 @@
                 Availability
               </label>
             </div>
-            
+            <div class="form-check">
+              <input v-model="filterOption" v-bind:value="'rating'" class="form-check-input" type="radio" name="filter" id="rating">
+              <label class="form-check-label" for="rating">
+                Rating
+              </label>
+            </div>
             <hr>
             <p>Order by:</p>
             <div class="form-check">
@@ -122,7 +127,7 @@
 
       <h1 class="display-5" v-text="sitename" style="text-align: center; font-weight: 400;"></h1>
       <div v-if="checkSearchBar">
-        <h2 class="display-7">Search Results</h2>
+        <h2 class="display-7 mt-3">Search Results</h2>
         <div class="row">
           <div class="col-12 col-md-6 col-lg-4" v-for="lesson in searchResults">
             <div class="card m-4">
@@ -132,11 +137,11 @@
 
                 <h4 class="card-title" style="text-align:center;">{{ lesson.subject }}</h4>
 
-                <p class="card-text" style="margin-top: 10px;"> <span><i style="color: blue;" class="fa-solid fa-location-dot"></i></span>
+                <p class="card-text" style="margin-top: 10px;"> <span><i class="fa-solid fa-location-dot"></i></span>
                     Location: {{ lesson.location }}</p>
                 <p class="card-text">
                   <span>
-                    <i style="color: green;" class="fa-solid fa-money-bill"></i></i>
+                    <i class="fa-solid fa-money-bill"></i></i>
                   </span>
                     Price: {{ lesson.price }}
                 </p>
@@ -174,7 +179,7 @@
       <div v-else>
         <div v-if="showLesson">
           <div class="row">
-            <h1 class="display-5" style="text-align: center; font-weight: 400;">After School Lessons</h1>
+            <h1 class="display-5 mt-3" style="text-align: center; font-weight: 400;">After School Lessons</h1>
           <div class="col-12 col-md-6 col-lg-4" v-for="lesson in sortedLessons">
          
             <div class="card m-4">
@@ -224,7 +229,7 @@
         </div>
         </div>
         <div v-else>
-          <h2 class="display-5" style="text-align: center; font-weight: 400;">Checkout Page</h2>
+          <h2 class="display-5 mt-3" style="text-align: center; font-weight: 400;">Checkout Page</h2>
           <div class="row">
             <div class="col-12 col-md-6 col-lg-4" v-for="lesson in cart">
               <div class="card m-4">
@@ -415,6 +420,15 @@
                   return lessonsArr.sort((a, b) => (a.location > b.location) ? 1 : -1)
                 }else{
                   return lessonsArr.sort((a, b) => (a.location < b.location) ? 1 : -1)
+                }
+               
+              }
+
+              if(this.filterOption === 'rating'){
+                if(this.sortOption === 'ascending'){
+                  return lessonsArr.sort((a, b) => (a.rating > b.rating) ? 1 : -1)
+                }else{
+                  return lessonsArr.sort((a, b) => (a.rating < b.rating) ? 1 : -1)
                 }
                
               }
