@@ -58,6 +58,53 @@
       <h1 class="display-5" v-text="sitename" style="text-align: center; font-weight: 400;"></h1>
       <div v-if="checkSearchBar">
         <h2 class="display-7">Search Results</h2>
+        <div class="row">
+          <div class="col-12 col-md-6 col-lg-4" v-for="lesson in searchResults">
+            <div class="card m-4">
+                <!-- binds src attribute to the image in the data element -->
+                <img class="card-img-top" v-bind:src="lesson.image" alt="Lesson image"/>
+              <div class="card-body">
+
+                <h4 class="card-title" style="text-align:center;">{{ lesson.subject }}</h4>
+
+                <p class="card-text" style="margin-top: 10px;"> <span><i class="fa-solid fa-location-dot"></i></span>
+                    Location: {{ lesson.location }}</p>
+                <p class="card-text">
+                  <span>
+                    <i class="fa-solid fa-money-bill"></i></i>
+                  </span>
+                    Price: {{ lesson.price }}
+                </p>
+                <p class="card-text">
+                  <span  v-if='lesson.spaces     === cartCount(lesson.id)'>
+                    <i style="color:red ;" class="fa-solid fa-xmark"></i>
+                  </span>
+                  <span v-else-if="lesson.spaces    - cartCount(lesson.id) < 2">
+                    <i style="color:yellow ;"  class="fa-solid fa-exclamation"></i>
+                  </span>
+                  <span v-else>
+                    <i style="color:green ;" class="fa-solid fa-check"></i>
+                  </span>
+                    Spaces Left: {{ lesson.spaces }}
+                </p>
+                <div style="text-align: center;">
+                  <div style="text-align: right;margin-bottom: 15px;">
+                    <span v-for="n in lesson.rating"><i style="color: #fcc404 ;" class="fa-solid fa-star"></i></span>
+                    <span v-for="n in 5-lesson.rating"><i class="fa-regular fa-star"></i></i></i></span>
+                  </div>
+
+
+                  <button class="btn btn-warning" v-on:click="addToCart(lesson)" v-if="canAddToCart(lesson)">
+                    Add to cart
+                  </button>
+
+                  <!-- This button will be displayed otherwise -->
+                  <button class="btn btn-warning" disabled="disabled" v-else>Add to cart</button>
+                </div>
+              </div>
+            </div> 
+          </div>
+        </div>
       </div>
       <div v-else>
         <div v-if="showLesson">
@@ -205,25 +252,14 @@
       },
       methods: {
         search() {
+          this.searchResults = [];
           this.checkSearchBar = true;
-
-          if (this.searchInput == "") this.checkSearchBar = false
-
-          // var result = this.lessons.find(item => item.subject.includes(this.searchInput));
-
-          for (i = 0; i < this.lessons.length; i++) {
-            result = this.lessons[i].subject;
-
-            if (result.includes(this.searchInput)) {
-
-              console.log(result)
-              this.searchResults.push(this.lessons[i].subject)
+          if (this.searchInput == "") this.checkSearchBar = false;
+          for (let i = 0; i < this.lessons.length; i++) {
+            if (this.lessons[i].subject.toLowerCase().includes(this.searchInput.toLowerCase()) || this.lessons[i].location.toLowerCase().includes(this.searchInput.toLowerCase())) {
+              this.searchResults.push(this.lessons[i]);
             }
-
-
-
           }
-          console.log(this.searchResults);
         },
         addToCart(lesson) {
           lesson.spaces--
