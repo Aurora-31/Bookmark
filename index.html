@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>Bookmark</title>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.7.10/dist/vue.js"></script>
+  <script src="lessons.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" />
+
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous" />
+
+</head>
+
+<body>
+  <div id="app">
+
+    <header>
+      <nav class="navbar fixed-top navbar-expand-sm navbar-light bg-light py-3" >
+        <div class="container-fluid">
+          <!-- <a class="navbar-brand"></a> -->
+          <img
+            src="https://see.fontimg.com/api/renderfont4/ALWWx/eyJyIjoiZnMiLCJoIjo5OCwidyI6MTUwMCwiZnMiOjY1LCJmZ2MiOiIjMDAwMDAwIiwiYmdjIjoiI0ZGRkZGRiIsInQiOjF9/Qm9va21hcms/urubus-personal-use-bold.png"
+            alt="Title fonts" width="160">
+
+          <input class="form-control me-3" style="width: 250px;" type="text" placeholder="Search" v-model="searchInput"
+            v-on:keyup="search">
+
+
+          <button class="btn btn-warning btn-sm" v-on:click="showCheckout" v-if="this.cart.length > 0">
+            <!-- 'cartItemCount' is used the same way as a data property. -->
+            {{ cartItemCount }}
+            <!-- add the cart icon -->
+            <span class="fa-solid fa-cart-shopping"></span> Checkout
+          </button>
+
+          <!-- This button will be displayed otherwise -->
+          <button class="btn btn-warning btn-sm" disabled="disabled" v-else>
+            <!-- 'cartItemCount' is used the same way as a data property. -->
+            <!-- add the cart icon -->
+            <span class="fa-solid fa-cart-shopping"></span> Checkout
+          </button>
+
+
+        </div>
+      </nav>
+      <!-- <input type="text" v-model="searchInput" v-on:keyup="search" placeholder="Search for products.."> -->
+
+
+
+    </header>
+    <main class="container">
+
+      <h1 class="display-5" v-text="sitename" style="text-align: center; font-weight: 400;"></h1>
+      <div v-if="checkSearchBar">
+        <h2 class="display-7">Search Results</h2>
+      </div>
+      <div v-else>
+        <div v-if="showLesson">
+          <div class="row">
+          <div class="col-12 col-md-6 col-lg-4" v-for="lesson in lessons">
+            <div class="card m-4">
+                <!-- binds src attribute to the image in the data element -->
+                <img class="card-img-top" v-bind:src="lesson.image" alt="Lesson image"/>
+              <div class="card-body">
+
+                <h4 class="card-title" style="text-align:center;">{{ lesson.subject }}</h4>
+
+                <p class="card-text" style="margin-top: 10px;"> <span><i class="fa-solid fa-location-dot"></i></span>
+                    Location: {{ lesson.location }}</p>
+                <p class="card-text">
+                  <span>
+                    <i class="fa-solid fa-money-bill"></i></i>
+                  </span>
+                    Price: {{ lesson.price }}
+                </p>
+                <p class="card-text">
+                  <span  v-if='lesson.spaces     === cartCount(lesson.id)'>
+                    <i style="color:red ;" class="fa-solid fa-xmark"></i>
+                  </span>
+                  <span v-else-if="lesson.spaces    - cartCount(lesson.id) < 2">
+                    <i style="color:yellow ;"  class="fa-solid fa-exclamation"></i>
+                  </span>
+                  <span v-else>
+                    <i style="color:green ;" class="fa-solid fa-check"></i>
+                  </span>
+                    Spaces Left: {{ lesson.spaces }}
+                </p>
+                <div style="text-align: center;">
+                  <div style="text-align: right;margin-bottom: 15px;">
+                    <span v-for="n in lesson.rating"><i style="color: #fcc404 ;" class="fa-solid fa-star"></i></span>
+                    <span v-for="n in 5-lesson.rating"><i class="fa-regular fa-star"></i></i></i></span>
+                  </div>
+
+
+                  <button class="btn btn-warning" v-on:click="addToCart(lesson)" v-if="canAddToCart(lesson)">
+                    Add to cart
+                  </button>
+
+                  <!-- This button will be displayed otherwise -->
+                  <button class="btn btn-warning" disabled="disabled" v-else>Add to cart</button>
+                </div>
+              </div>
+            </div> 
+          </div>
+        </div>
+        </div>
+        <div v-else>
+          <h2 class="display-5" style="text-align: center; font-weight: 400;">Checkout Page</h2>
+          <div class="row">
+            <div class="col-12 col-md-6 col-lg-4" v-for="lesson in cart">
+              <div class="card m-4">
+                  <!-- binds src attribute to the image in the data element -->
+                  <img class="card-img-top" v-bind:src="lesson.image" alt="Lesson image"/>
+                <div class="card-body">
+  
+                  <h4 class="card-title" style="text-align:center;">{{ lesson.subject }}</h4>
+  
+                  <p class="card-text" style="margin-top: 10px;"> <span><i class="fa-solid fa-location-dot"></i></span>
+                      Location: {{ lesson.location }}</p>
+                  <p class="card-text">
+                    <span>
+                      <i class="fa-solid fa-money-bill"></i></i>
+                    </span>
+                      Price: {{ lesson.price }}
+                  </p>
+                 
+                  <div style="text-align: center;">
+                    <button class="btn btn-danger" v-on:click="remove(lesson.id)">
+                      Remove
+                    </button>
+                  </div>
+
+                </div>
+              </div> 
+            </div>
+          </div>
+          <p class="display-6" style="text-align: center; font-weight: 200;">Checkout Details</p>
+          <div style="text-align: center; margin: 2%">
+            <p style="display: inline;">
+              <strong>Name:</strong>
+              <!-- This input field is bound to 'firstName' in the 'order' object -->
+              <input v-model.trim="name" />
+            </p>
+            <p style="display: inline; margin: 2%;">
+              <strong>Phone number:</strong>
+              <input v-model="phone" type="number" />
+            </p>
+          </div>
+          
+          <div style="text-align: center; margin-bottom: 2%;">
+            <button class="btn btn-outline-dark" v-if="canCheckout">
+              Checkout
+            </button>
+            <button class="btn btn-outline-dark" disabled="disabled" v-else>
+              Checkout
+            </button>
+          </div>
+        </div>
+      </div>
+    </main>
+    <footer class="d-flex justify-content-center align-items-center py-3 border-top bg-light">
+      <div class="text-center">
+        <span class="text-muted">Khadija Nadeem Shaikh</span>
+      </div>
+
+    </footer>
+  </div>
+
+  <script type="text/javascript">
+    var webstore = new Vue({
+      el: "#app",
+      data: {
+        sitename: "After School Lessons",
+        lessons: lessons,
+        cart: [], //array to store items
+        showLesson: true,
+        checkSearchBar: false,
+        searchInput: "",
+        searchResults: [],
+        name: "",
+        phone: ""
+      },
+      methods: {
+        search() {
+          this.checkSearchBar = true;
+
+          if (this.searchInput == "") this.checkSearchBar = false
+
+          // var result = this.lessons.find(item => item.subject.includes(this.searchInput));
+
+          for (i = 0; i < this.lessons.length; i++) {
+            result = this.lessons[i].subject;
+
+            if (result.includes(this.searchInput)) {
+
+              console.log(result)
+              this.searchResults.push(this.lessons[i].subject)
+            }
+
+
+
+          }
+          console.log(this.searchResults);
+        },
+        addToCart(lesson) {
+          lesson.spaces--
+          this.cart.push(lesson)
+          // console.log(this.cart);
+          // document.getElementById('add').disable =true
+        },
+        showCheckout() {
+          this.showLesson = this.showLesson ? false : true;
+        },
+        remove(id){   
+          let index;
+          for (let i = 0; i < this.cart.length; i++) {
+            if (this.cart[i]["id"] === id) {
+              index = i;
+            }
+          }
+          this.cart.splice(index, 1);
+
+          if(this.cart.length === 0){
+            this.showLesson = true
+          }
+        },
+        canCheckout(){
+          return /^[0-9]*$/.test(this.phone) && /^[a-zA-Z]+$/.test(this.name)
+        },
+        //   submitForm() {
+        //     alert("Order submitted!");
+        //   },
+        canAddToCart(lesson) {
+          // console.log(lesson.spaces)
+          return lesson.spaces > this.cartCount(lesson.id);
+        },
+        cartCount(id) {
+          let count = 0;
+          for (let i = 0; i < this.cart.length; i++) {
+            if (this.cart[i] === id) {
+              count++;
+            }
+          } return count;
+        }
+      },
+      computed: {
+        // the Computed Property object
+        cartItemCount: function () {
+          // the property name
+          // its value is calculated when it is called
+          return this.cart.length || "";
+        },
+        sortedLessons() {
+          let lessonsArray = this.lessons.slice(0);
+          function compare(a, b) {
+            if (a.price > b.price) return 1;
+            if (a.price < b.price) return -1;
+            return 0;
+          }
+          return lessonsArray.sort(compare);
+        },
+
+
+      },
+    });
+
+  </script>
+  <!-- Link to Bootstrap library -->
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"
+    integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"
+    integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF"
+    crossorigin="anonymous"></script>
+</body>
+
+</html>
