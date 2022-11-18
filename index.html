@@ -65,11 +65,11 @@
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title">Modal title</h5>
+            <h5 class="modal-title">Choose filter</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
-            <p>Choose Filter</p>
+            <p>Sort By:</p>
             <div class="form-check">
               <input v-model="filterOption" v-bind:value="'subject'" class="form-check-input" type="radio" name="filter" id="subject" checked>
               <label class="form-check-label" for="subject">
@@ -89,12 +89,14 @@
               </label>
             </div>
             <div class="form-check">
-              <input v-model="filterOption" v-bind:value="'availability'" class="form-check-input" type="radio" name="filter" id="availability">
+              <input v-model="filterOption" v-bind:value="'spaces'" class="form-check-input" type="radio" name="filter" id="availability">
               <label class="form-check-label" for="availability">
                 Availability
               </label>
             </div>
+            
             <hr>
+            <p>Order by:</p>
             <div class="form-check">
               <input v-model="sortOption" v-bind:value="'ascending'" class="form-check-input" type="radio" name="sort" id="ascending" checked>
               <label class="form-check-label" for="ascending">
@@ -130,11 +132,11 @@
 
                 <h4 class="card-title" style="text-align:center;">{{ lesson.subject }}</h4>
 
-                <p class="card-text" style="margin-top: 10px;"> <span><i class="fa-solid fa-location-dot"></i></span>
+                <p class="card-text" style="margin-top: 10px;"> <span><i style="color: blue;" class="fa-solid fa-location-dot"></i></span>
                     Location: {{ lesson.location }}</p>
                 <p class="card-text">
                   <span>
-                    <i class="fa-solid fa-money-bill"></i></i>
+                    <i style="color: green;" class="fa-solid fa-money-bill"></i></i>
                   </span>
                     Price: {{ lesson.price }}
                 </p>
@@ -172,7 +174,9 @@
       <div v-else>
         <div v-if="showLesson">
           <div class="row">
+            <h1 class="display-5" style="text-align: center; font-weight: 400;">After School Lessons</h1>
           <div class="col-12 col-md-6 col-lg-4" v-for="lesson in sortedLessons">
+         
             <div class="card m-4">
                 <!-- binds src attribute to the image in the data element -->
                 <img class="card-img-top" v-bind:src="lesson.image" alt="Lesson image"/>
@@ -364,7 +368,8 @@
               count++;
             }
           } return count;
-        }
+        },
+       
       },
       computed: {
         // the Computed Property object
@@ -374,13 +379,47 @@
           return this.cart.length || "";
         },
         sortedLessons() {
-          let lessonsArray = this.lessons.slice(0);
-          function compare(a, b) {
-            if (a.price > b.price) return 1;
-            if (a.price < b.price) return -1;
-            return 0;
-          }
-          return lessonsArray.sort(compare);
+          let lessonsArr = this.lessons.slice(0);
+
+            // https://flaviocopes.com/how-to-sort-array-of-objects-by-property-javascript/
+          
+              if(this.filterOption === 'price'){
+                if(this.sortOption === 'ascending'){
+                  return lessonsArr.sort((a, b) => (a.price > b.price) ? 1 : -1)
+                }else{
+                  return lessonsArr.sort((a, b) => (a.price < b.price) ? 1 : -1)
+                }
+               
+              }
+
+              if(this.filterOption === 'spaces'){
+                if(this.sortOption === 'ascending'){
+                  return lessonsArr.sort((a, b) => (a.spaces > b.spaces) ? 1 : -1)
+                }else{
+                  return lessonsArr.sort((a, b) => (a.spaces < b.spaces) ? 1 : -1)
+                }
+               
+              }
+
+              if(this.filterOption === 'subject'){
+                if(this.sortOption === 'ascending'){
+                  return lessonsArr.sort((a, b) => (a.subject > b.subject) ? 1 : -1)
+                }else{
+                  return lessonsArr.sort((a, b) => (a.subject < b.subject) ? 1 : -1)
+                }
+               
+              }
+
+              if(this.filterOption === 'location'){
+                if(this.sortOption === 'ascending'){
+                  return lessonsArr.sort((a, b) => (a.location > b.location) ? 1 : -1)
+                }else{
+                  return lessonsArr.sort((a, b) => (a.location < b.location) ? 1 : -1)
+                }
+               
+              }
+                  
+    
         },
 
 
