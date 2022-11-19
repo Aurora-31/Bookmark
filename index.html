@@ -344,6 +344,7 @@
         },
         showCheckout() {
           this.showLesson = this.showLesson ? false : true;
+          
         },
         remove(id){   
           let index;
@@ -353,6 +354,12 @@
             }
           }
           this.cart.splice(index, 1);
+
+          for(let i=0;i<this.lessons.length;i++){
+            if(this.lessons[i]["id"] === id){
+              this.lessons[i].spaces = this.lessons[i].spaces+1
+            }
+          }
 
           if(this.cart.length === 0){
             this.showLesson = true
