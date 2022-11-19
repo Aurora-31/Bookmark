@@ -6,7 +6,6 @@ let lessons =[
         description: "",
         price: '£350',
         spaces: 5,
-        availableSpaces: 5,
         image: "images/calculus.jpg",
         rating: 4
       },
@@ -17,7 +16,6 @@ let lessons =[
         description: "",
         price: '£150',
         spaces: 5,
-        availableSpaces: 5,
         image: "images/physicalEducation.jpg",
         rating: 4
       },
@@ -28,7 +26,6 @@ let lessons =[
         description: "",
         price: '£650',
         spaces: 5,
-        availableSpaces: 5,
         image: "images/programming.jpg",
         rating: 3
       },
@@ -39,7 +36,6 @@ let lessons =[
         description: "",
         price: '£550',
         spaces: 5,
-        availableSpaces: 5,
         image: "images/dance.jpg",
         rating: 3
       },
@@ -50,7 +46,6 @@ let lessons =[
         description: "",
         price: '£375',
         spaces: 5,
-        availableSpaces: 5,
         image: "images/cyberSecurity.jpg",
         rating: 4
       },
@@ -61,7 +56,6 @@ let lessons =[
         description: "",
         price: '£399',
         spaces: 5,
-        availableSpaces: 5,
         image: "images/music.jpg",
         rating: 2
       },
@@ -72,7 +66,6 @@ let lessons =[
         description: "",
         price: '£200',
         spaces: 5,
-        availableSpaces: 5,
         image: "images/woodwork.jpg",
         rating: 5
       },
@@ -83,7 +76,6 @@ let lessons =[
         description: "",
         price: '£400',
         spaces: 5,
-        availableSpaces: 5,
         image: "images/gymnastics.jpg",
         rating: 4
       },
@@ -94,7 +86,6 @@ let lessons =[
         description: "",
         price: '£780',
         spaces: 5,
-        availableSpaces: 5,
         image: "images/graphics.jpg",
         rating: 3
       },
@@ -105,7 +96,6 @@ let lessons =[
         description: "",
         price: '£395',
         spaces: 5,
-        availableSpaces: 5,
         image: "images/photography.jpg",
         rating: 4
       }
